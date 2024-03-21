@@ -25,11 +25,24 @@ class GameState():
         self.whiteMove = True
         self.moveLog = []
 
+    '''
+    move a piece using move parameter. this will not work for pawn promotion, castling, en-passant
+    '''
     def makeMove(self, move):
-        self.board[move.startRow][move.startCol] = "--"
-        self.board[move.endRow][move.endCol] = move.pieceMoved
+        self.board[move.startRow][move.startCol] = "--"     # make blank in source
+        self.board[move.endRow][move.endCol] = move.pieceMoved  # put piece in destination
         self.moveLog.append(move)   # log the move, so we can see history or undo move
         self.whiteMove = not self.whiteMove     # swap players
+
+    '''
+      undo the last move
+    '''
+    def undoMove(self):
+        if len(self.moveLog) > 0:   # make sure there is a move to undo
+            move = self.moveLog.pop()
+            self.board[move.startRow][move.startCol] = move.pieceMoved
+            self.board[move.endRow][move.endCol] = move.pieceCaptured
+            self.whiteMove = not self.whiteMove     # swap players
 
 
 class Move():

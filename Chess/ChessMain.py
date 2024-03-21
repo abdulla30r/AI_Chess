@@ -43,22 +43,26 @@ def main():
     playerClicks = []  # keep track of player clicks (two tuple: ((6,4),(4,4))
     while running:  # game started
         for event in p.event.get():
-            if event.type == p.QUIT:    # cross clicked
-                running = False     # quit game
-            elif event.type == p.MOUSEBUTTONDOWN:   # left or right click of mouse
+            if event.type == p.QUIT:  # cross clicked
+                running = False  # quit game
+            elif event.type == p.MOUSEBUTTONDOWN:  # left or right click of mouse
                 location = p.mouse.get_pos()  # (x,y) location of mouse
                 col = location[0] // SQ_SIZE
                 row = location[1] // SQ_SIZE
 
                 if sqSelected == (row, col):  # user clicked the same square twice
                     sqSelected = ()  # deselecting user click
-                    playerClicks = []   # clear user clicks
+                    playerClicks = []  # clear user clicks
 
-                else:   # valid click
-                    sqSelected = (row, col)     # selecting user click
-                    playerClicks.append(sqSelected)     # append for both first and second click
+                else:  # valid click
+                    sqSelected = (row, col)  # selecting user click
+                    playerClicks.append(sqSelected)  # append for both first and second click
 
-                if len(playerClicks) == 2:     # after 2nd click
+                if len(playerClicks) == 1:
+                    if gs.board[playerClicks[0][0]][playerClicks[0][1]] == "--":
+                        playerClicks = []
+
+                if len(playerClicks) == 2:  # after 2nd click
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
                     # print(move.getChessNotation())
                     # print(move.pieceMoved)
@@ -66,6 +70,10 @@ def main():
 
                     sqSelected = ()
                     playerClicks = []
+
+            elif event.type == p.KEYDOWN:
+                if event.key == p.K_z:  # undo when z is pressed
+                    gs.undoMove()
 
             drawGameState(screen, gs)
             clock.tick(MAX_FPS)
