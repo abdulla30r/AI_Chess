@@ -22,7 +22,7 @@ class GameState():
             ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"],
         ]
 
-        self.whiteMove = True
+        self.whiteToMove = True
         self.moveLog = []
 
     '''
@@ -32,7 +32,7 @@ class GameState():
         self.board[move.startRow][move.startCol] = "--"     # make blank in source
         self.board[move.endRow][move.endCol] = move.pieceMoved  # put piece in destination
         self.moveLog.append(move)   # log the move, so we can see history or undo move
-        self.whiteMove = not self.whiteMove     # swap players
+        self.whiteToMove = not self.whiteToMove     # swap players
 
     '''
       undo the last move
@@ -42,7 +42,35 @@ class GameState():
             move = self.moveLog.pop()
             self.board[move.startRow][move.startCol] = move.pieceMoved
             self.board[move.endRow][move.endCol] = move.pieceCaptured
-            self.whiteMove = not self.whiteMove     # swap players
+            self.whiteToMove = not self.whiteToMove     # swap players
+
+    def getValidMoves(self):
+        return self.getAllPossibleMoves()   # for now, we will not worry about checks
+
+    '''
+    All moves without considering check
+    '''
+    def getAllPossibleMoves(self):
+        moves = [Move((6, 4), (4, 4), self.board)]
+        for r in range(len(self.board)):    # number of rows
+            for c in range(len(self.board[r])):     # number of cols
+                turn = self.board[r][c][0]
+                if (turn == "w" and self.whiteToMove) and (turn == "b" and not self.whiteToMove):
+                    piece = self.board[r][c][1]
+                    if piece == "p":
+                        self.getPawnMoves(r, c, moves)
+                    elif piece == "R":
+                        self.getRookeMoves(r, c, moves)
+        return moves
+
+    '''
+    Get all the pawn moves at row,col and add these moves to the list
+    '''
+    def getPawnMoves(self, r, c, moves):
+        pass
+
+    def getRookeMoves(self, r, c, moves):
+        pass
 
 
 class Move():
@@ -63,7 +91,18 @@ class Move():
         self.endCol = endSq[1]
         self.pieceMoved = board[self.startRow][self.startCol]
         self.pieceCaptured = board[self.endRow][self.endCol]
+        self.moveID = self.startRow*1000 + self.startCol * 100 + self.endRow * 10 + self.endCol
+        print(self.moveID)
 
+    '''
+    Overriding the equals method
+    '''
+    def __eq__(self, other):
+        if isinstance(other, Move):
+            return self.moveID == other.moveID
+        return False
+
+    # source Destination of current move. example : d2d4
     def getChessNotation(self):
         return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(self.endRow, self.endCol)
 

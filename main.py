@@ -1,3 +1,1 @@
-from Chess import ChessMain
-
-ChessMain.main()
+# run chessMain.py

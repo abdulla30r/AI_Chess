@@ -36,6 +36,10 @@ def main():
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = ChessEngine.GameState()
+
+    validMoves = gs.getValidMoves()
+    moveMade = False    # flag variable for when a move is made
+
     loadImages()  # only do this once. before the while loop
 
     running = True
@@ -45,6 +49,8 @@ def main():
         for event in p.event.get():
             if event.type == p.QUIT:  # cross clicked
                 running = False  # quit game
+
+            # mouse click
             elif event.type == p.MOUSEBUTTONDOWN:  # left or right click of mouse
                 location = p.mouse.get_pos()  # (x,y) location of mouse
                 col = location[0] // SQ_SIZE
@@ -58,23 +64,29 @@ def main():
                     sqSelected = (row, col)  # selecting user click
                     playerClicks.append(sqSelected)  # append for both first and second click
 
-                if len(playerClicks) == 1:
-                    if gs.board[playerClicks[0][0]][playerClicks[0][1]] == "--":
-                        playerClicks = []
-
                 if len(playerClicks) == 2:  # after 2nd click
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
-                    # print(move.getChessNotation())
-                    # print(move.pieceMoved)
-                    gs.makeMove(move)
+                    print(move.getChessNotation())
+
+                    if move in validMoves:
+                        # print(move.pieceMoved)
+                        gs.makeMove(move)
+                        moveMade = True
 
                     sqSelected = ()
                     playerClicks = []
 
+            # undo move
             elif event.type == p.KEYDOWN:
                 if event.key == p.K_z:  # undo when z is pressed
                     gs.undoMove()
+                    moveMade = True
 
+            if moveMade:
+                validMoves = gs.getValidMoves()
+                moveMade = False
+
+            # UI
             drawGameState(screen, gs)
             clock.tick(MAX_FPS)
             p.display.flip()
