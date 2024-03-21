@@ -39,10 +39,34 @@ def main():
     loadImages()  # only do this once. before the while loop
 
     running = True
-    while running:
+    sqSelected = ()  # no squared selected initially. keep track of the last click of user. (tuple: (row,col))
+    playerClicks = []  # keep track of player clicks (two tuple: ((6,4),(4,4))
+    while running:  # game started
         for event in p.event.get():
-            if event.type == p.QUIT:
-                running = False
+            if event.type == p.QUIT:    # cross clicked
+                running = False     # quit game
+            elif event.type == p.MOUSEBUTTONDOWN:   # left or right click of mouse
+                location = p.mouse.get_pos()  # (x,y) location of mouse
+                col = location[0] // SQ_SIZE
+                row = location[1] // SQ_SIZE
+
+                if sqSelected == (row, col):  # user clicked the same square twice
+                    sqSelected = ()  # deselecting user click
+                    playerClicks = []   # clear user clicks
+
+                else:   # valid click
+                    sqSelected = (row, col)     # selecting user click
+                    playerClicks.append(sqSelected)     # append for both first and second click
+
+                if len(playerClicks) == 2:     # after 2nd click
+                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
+                    # print(move.getChessNotation())
+                    # print(move.pieceMoved)
+                    gs.makeMove(move)
+
+                    sqSelected = ()
+                    playerClicks = []
+
             drawGameState(screen, gs)
             clock.tick(MAX_FPS)
             p.display.flip()
@@ -77,7 +101,8 @@ def drawPieces(screen, board):
     for r in range(DIMENSION):
         for c in range(DIMENSION):
             piece = board[r][c]
-            if piece != "--" :
-                screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+            if piece != "--":
+                screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+
 
 main()
