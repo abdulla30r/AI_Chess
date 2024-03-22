@@ -147,24 +147,30 @@ class GameState():
         directions = ((-1, -1), (-1, 1), (1, -1), (1, 1))  # 4 diagonal
         self.getCommonMoves(directions, r, c, moves)
 
-    def getKnightMoves(self, r, c, moves):
-        knightMoves = ((2, -1), (2, 1), (-2, 1), (-2, -1), (1, -2), (1, 2), (-1, -2), (-1, 2))
+    def getKingAndKnightMoves(self, directions, r, c, moves):
         allyColor = "w" if self.whiteToMove else "b"
-
-        for m in knightMoves:
+        print(r, c)
+        for m in directions:
             endRow = r + m[0]
             endCol = c + m[1]
             if 0 <= endRow < 8 and 0 <= endCol < 8:
                 endPiece = self.board[endRow][endCol]
                 if endPiece[0] != allyColor:
+                    print(endPiece, endCol, endRow)
+                    print(endPiece)
                     moves.append(Move((r, c), (endRow, endCol), self.board))
 
+    def getKnightMoves(self, r, c, moves):
+        directions = ((2, -1), (2, 1), (-2, 1), (-2, -1), (1, -2), (1, 2), (-1, -2), (-1, 2))
+        self.getKingAndKnightMoves(directions, r, c, moves)
+
     def getKingMoves(self, r, c, moves):
-        pass
+        directions = ((0, -1), (0, 1), (1, 0), (-1, 0), (-1, -1), (1, 1), (1, -1), (-1, 1))
+        self.getKingAndKnightMoves(directions, r, c, moves)
 
     def getQueenMoves(self, r, c, moves):
-        directions = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))  # 4 diagonal
-        self.getCommonMoves(directions, r, c, moves)
+        self.getBishopMoves(r, c, moves)
+        self.getRookeMoves(r, c, moves)
 
 
 class Move():
@@ -186,7 +192,6 @@ class Move():
         self.pieceMoved = board[self.startRow][self.startCol]
         self.pieceCaptured = board[self.endRow][self.endCol]
         self.moveID = self.startRow * 1000 + self.startCol * 100 + self.endRow * 10 + self.endCol
-        print(self.moveID)
 
     '''
     Overriding the equals method
