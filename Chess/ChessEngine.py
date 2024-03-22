@@ -106,8 +106,39 @@ class GameState():
             if (c < 7) and (self.board[r + 1][c + 1][0] == "w"):
                 moves.append(Move((r, c), (r + 1, c + 1), self.board))
 
+            # add pawn promotion later
+
     def getRookeMoves(self, r, c, moves):
-        pass
+        directions = ((-1, 0), (0, -1), (1, 0), (0, 1))     # up, left, down, right
+        enemyColor = "b" if self.whiteToMove else "w"   # defining enemy color
+
+        '''
+        4 direction ei jete pare
+        loop for each direction:
+            left=>
+                loop for each cell
+                    first cell=> check piece and take decision
+                    
+                    adjacent cell theke count shuru hobe. adjacent invalid hole ar samne jete parbena
+                    so loop break
+        '''
+
+        for d in directions:
+            for i in range(1, 8):
+                endRow = r + d[0] * i
+                endCol = c + d[1] * i
+
+                if 0 <= endRow < 8 and 0 <= endCol < 8:    # on board
+                    endPiece = self.board[endRow][endCol]
+                    if endPiece == "--":    # empty space valid
+                        moves.append(Move((r, c), (endRow, endCol), self.board))
+                    elif endPiece[0] == enemyColor:     # enemy piece valid
+                        moves.append(Move((r, c), (endRow, endCol), self.board))
+                        break
+                    else:   # friendly piece invalid
+                        break
+                else:
+                    break
 
     def getBishopMoves(self, r, c, moves):
         pass
