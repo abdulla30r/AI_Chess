@@ -148,7 +148,16 @@ class GameState():
         self.getCommonMoves(directions, r, c, moves)
 
     def getKnightMoves(self, r, c, moves):
-        pass
+        knightMoves = ((2, -1), (2, 1), (-2, 1), (-2, -1), (1, -2), (1, 2), (-1, -2), (-1, 2))
+        allyColor = "w" if self.whiteToMove else "b"
+
+        for m in knightMoves:
+            endRow = r + m[0]
+            endCol = c + m[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 8:
+                endPiece = self.board[endRow][endCol]
+                if endPiece[0] != allyColor:
+                    moves.append(Move((r, c), (endRow, endCol), self.board))
 
     def getKingMoves(self, r, c, moves):
         pass
