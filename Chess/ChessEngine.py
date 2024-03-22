@@ -149,15 +149,12 @@ class GameState():
 
     def getKingAndKnightMoves(self, directions, r, c, moves):
         allyColor = "w" if self.whiteToMove else "b"
-        print(r, c)
         for m in directions:
             endRow = r + m[0]
             endCol = c + m[1]
             if 0 <= endRow < 8 and 0 <= endCol < 8:
                 endPiece = self.board[endRow][endCol]
                 if endPiece[0] != allyColor:
-                    print(endPiece, endCol, endRow)
-                    print(endPiece)
                     moves.append(Move((r, c), (endRow, endCol), self.board))
 
     def getKnightMoves(self, r, c, moves):

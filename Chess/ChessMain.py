@@ -74,8 +74,12 @@ def main():
                         gs.makeMove(move)
                         moveMade = True
 
-                    sqSelected = ()
-                    playerClicks = []
+                        sqSelected = ()
+                        playerClicks = []
+                        txtMove = "White's turn" if gs.whiteToMove else "Black's turn"
+                        print(txtMove)
+                    else:
+                        playerClicks = [sqSelected]
 
             # undo move
             elif event.type == p.KEYDOWN:
