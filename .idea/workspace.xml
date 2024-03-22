@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4d58c9a-cee0-4227-9669-21cbd3882148" name="Changes" comment="generalized move function for all piece">
+    <list default="true" id="d4d58c9a-cee0-4227-9669-21cbd3882148" name="Changes" comment="move for rookes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Chess/ChessEngine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Chess/ChessEngine.py" afterDir="false" />
     </list>
@@ -159,7 +159,7 @@
       <workItem from="1711013159527" duration="7810000" />
       <workItem from="1711022872371" duration="618000" />
       <workItem from="1711121431651" duration="629000" />
-      <workItem from="1711132790499" duration="2089000" />
+      <workItem from="1711132790499" duration="3914000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <option name="closed" value="true" />
@@ -225,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711021672179</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="move for rookes">
+      <option name="closed" value="true" />
+      <created>1711134912233</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1711134912233</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,10 +248,11 @@
     <MESSAGE value="checking 1 validate move" />
     <MESSAGE value="pawn moves validated" />
     <MESSAGE value="generalized move function for all piece" />
-    <option name="LAST_COMMIT_MESSAGE" value="generalized move function for all piece" />
+    <MESSAGE value="move for rookes" />
+    <option name="LAST_COMMIT_MESSAGE" value="move for rookes" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Chess$ChessMain.coverage" NAME="ChessMain Coverage Results" MODIFIED="1711134369349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Chess" />
+    <SUITE FILE_PATH="coverage/Chess$ChessMain.coverage" NAME="ChessMain Coverage Results" MODIFIED="1711136259134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Chess" />
     <SUITE FILE_PATH="coverage/Chess$ChessEngine.coverage" NAME="ChessEngine Coverage Results" MODIFIED="1711002457179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Chess" />
     <SUITE FILE_PATH="coverage/Chess$main.coverage" NAME="main Coverage Results" MODIFIED="1711015006608" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

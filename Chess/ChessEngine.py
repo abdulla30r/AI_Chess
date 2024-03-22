@@ -63,13 +63,13 @@ class GameState():
                 turn = self.board[r][c][0]
                 if (turn == "w" and self.whiteToMove) or (turn == "b" and not self.whiteToMove):
                     piece = self.board[r][c][1]
-                    self.moveFunction[piece](r, c, moves)   # calls the appropriate move function based on piece
+                    self.moveFunction[piece](r, c, moves)  # calls the appropriate move function based on piece
         return moves
 
     '''
     Get all the pawn moves at row,col and add these moves to the list
+    gonna refactor this part of code later
     '''
-
     def getPawnMoves(self, r, c, moves):
         if self.whiteToMove:  # white pawn moves
 
@@ -108,40 +108,44 @@ class GameState():
 
             # add pawn promotion later
 
-    def getRookeMoves(self, r, c, moves):
-        directions = ((-1, 0), (0, -1), (1, 0), (0, 1))     # up, left, down, right
-        enemyColor = "b" if self.whiteToMove else "w"   # defining enemy color
+    '''
+    4 direction ei jete pare
+    loop for each direction:
+       left=>
+           loop for each cell
+               first cell=> check piece and take decision
+               adjacent cell theke count shuru hobe. adjacent invalid hole ar samne jete parbena
+               so loop break
+    this is common for both rooke and bishop. only difference one goes straight another diagonal.
+    so after deciding direction just use this function.
+    '''
 
-        '''
-        4 direction ei jete pare
-        loop for each direction:
-            left=>
-                loop for each cell
-                    first cell=> check piece and take decision
-                    
-                    adjacent cell theke count shuru hobe. adjacent invalid hole ar samne jete parbena
-                    so loop break
-        '''
-
+    def getCommonMoves(self, directions, r, c, moves):
+        enemyColor = "b" if self.whiteToMove else "w"  # defining enemy color
         for d in directions:
             for i in range(1, 8):
                 endRow = r + d[0] * i
                 endCol = c + d[1] * i
 
-                if 0 <= endRow < 8 and 0 <= endCol < 8:    # on board
+                if 0 <= endRow < 8 and 0 <= endCol < 8:  # on board
                     endPiece = self.board[endRow][endCol]
-                    if endPiece == "--":    # empty space valid
+                    if endPiece == "--":  # empty space valid
                         moves.append(Move((r, c), (endRow, endCol), self.board))
-                    elif endPiece[0] == enemyColor:     # enemy piece valid
+                    elif endPiece[0] == enemyColor:  # enemy piece valid
                         moves.append(Move((r, c), (endRow, endCol), self.board))
                         break
-                    else:   # friendly piece invalid
+                    else:  # friendly piece invalid
                         break
                 else:
                     break
 
+    def getRookeMoves(self, r, c, moves):
+        directions = ((-1, 0), (0, -1), (1, 0), (0, 1))  # up, left, down, right
+        self.getCommonMoves(directions, r, c, moves)
+
     def getBishopMoves(self, r, c, moves):
-        pass
+        directions = ((-1, -1), (-1, 1), (1, -1), (1, 1))  # 4 diagonal
+        self.getCommonMoves(directions, r, c, moves)
 
     def getKnightMoves(self, r, c, moves):
         pass
@@ -150,7 +154,8 @@ class GameState():
         pass
 
     def getQueenMoves(self, r, c, moves):
-        pass
+        directions = ((-1, -1), (-1, 1), (1, -1), (1, 1), (-1, 0), (0, -1), (1, 0), (0, 1))  # 4 diagonal
+        self.getCommonMoves(directions, r, c, moves)
 
 
 class Move():
