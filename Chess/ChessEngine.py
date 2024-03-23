@@ -27,6 +27,8 @@ class GameState():
 
         self.whiteToMove = True
         self.moveLog = []
+        self.whiteKingLocation = (7, 4)
+        self.blackKingLocation = (0, 4)
 
     '''
     move a piece using move parameter. this will not work for pawn promotion, castling, en-passant
@@ -38,6 +40,11 @@ class GameState():
         self.moveLog.append(move)  # log the move, so we can see history or undo move
         self.whiteToMove = not self.whiteToMove  # swap players
 
+        # keep tracking of king in case of check
+        if move.pieceMoved == "wK":
+            self.whiteKingLocation = (move.endRow, move.endCol)
+        elif move.pieceMoved == "bK":
+            self.blackKingLocation = (move.endRow, move.endCol)
     '''
       undo the last move
     '''
@@ -49,12 +56,40 @@ class GameState():
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove  # swap players
 
+            # keep tracking of king in case of check
+            if move.pieceMoved == "wK":
+                self.whiteKingLocation = (move.startRow, move.startCol)
+            elif move.pieceMoved == "bK":
+                self.blackKingLocation = (move.startRow, move.startCol)
+
     def getValidMoves(self):
-        return self.getAllPossibleMoves()  # for now, we will not worry about checks
+        # 1. generate all possible moves
+        moves = self.getAllPossibleMoves()
+        # 2. for each move, make them
+        for i in range(len(moves) - 1, -1, -1):     # when removing from a list fo backward through that list
+            self.makeMove(moves[i])
+            # 3. generate all opponent's move
+            oppMoves = self.getAllPossibleMoves()
+            # 4. for each of your opponent's move, see if they attack your king.
+
+        # 5. if they attack your king, then it's invalid move.
+
+        return moves  # for now, we will not worry about checks
 
     '''
     All moves without considering check
     '''
+
+    '''
+    Determine if the current player is in chess
+    '''
+
+    def inCheck(self):
+        pass
+
+    # determine if the enemy attack r,c
+    def squareUnderAttack(self, r, c):
+        pass
 
     def getAllPossibleMoves(self):
         moves = []
