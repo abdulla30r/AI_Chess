@@ -29,6 +29,8 @@ class GameState():
         self.moveLog = []
         self.whiteKingLocation = (7, 4)
         self.blackKingLocation = (0, 4)
+        self.checkMate = False
+        self.stallMate = False
 
     '''
     move a piece using move parameter. this will not work for pawn promotion, castling, en-passant
@@ -69,12 +71,24 @@ class GameState():
         for i in range(len(moves) - 1, -1, -1):     # when removing from a list fo backward through that list
             self.makeMove(moves[i])
             # 3. generate all opponent's move
-            oppMoves = self.getAllPossibleMoves()
             # 4. for each of your opponent's move, see if they attack your king.
+            # 3 and 4
+            self.whiteToMove = not self.whiteToMove
+            if self.inCheck():
+                moves.remove(moves[i])
+            # 5. if they attack your king, then it's invalid move.
+            self.whiteToMove = not self.whiteToMove
+            self.undoMove()
+        if len(moves) == 0:
+            if self.inCheck():
+                self.checkMate = True
+            else:
+                self.stallMate = True
+        else:
+            self.checkMate = False
+            self.stallMate = False
 
-        # 5. if they attack your king, then it's invalid move.
-
-        return moves  # for now, we will not worry about checks
+        return moves
 
     '''
     All moves without considering check
@@ -85,11 +99,20 @@ class GameState():
     '''
 
     def inCheck(self):
-        pass
+        if self.whiteToMove:
+            return self.squareUnderAttack(self.whiteKingLocation[0], self.whiteKingLocation[1])
+        else:
+            return self.squareUnderAttack(self.blackKingLocation[0], self.blackKingLocation[1])
 
     # determine if the enemy attack r,c
     def squareUnderAttack(self, r, c):
-        pass
+        self.whiteToMove = not self.whiteToMove     # switch to opponent's turn
+        oppMoves = self.getAllPossibleMoves()
+        self.whiteToMove = not self.whiteToMove
+        for move in oppMoves:
+            if move.endRow == r and move.endCol == c:
+                return True
+        return False
 
     def getAllPossibleMoves(self):
         moves = []
