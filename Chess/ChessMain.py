@@ -69,16 +69,16 @@ def main():
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
                     print(move.getChessNotation())
 
-                    if move in validMoves:
-                        # print(move.pieceMoved)
-                        gs.makeMove(move)
-                        moveMade = True
-
-                        sqSelected = ()
-                        playerClicks = []
-                        txtMove = "White's turn" if gs.whiteToMove else "Black's turn"
-                        print(txtMove)
-                    else:
+                    for i in range(len(validMoves)):
+                        if move == validMoves[i]:
+                            # print(move.pieceMoved)
+                            gs.makeMove(move)
+                            moveMade = True
+                            sqSelected = ()
+                            playerClicks = []
+                            txtMove = "White's turn" if gs.whiteToMove else "Black's turn"
+                            print(txtMove)
+                    if not moveMade:
                         playerClicks = [sqSelected]
 
             # undo move

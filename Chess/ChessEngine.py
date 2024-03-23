@@ -35,7 +35,6 @@ class GameState():
     '''
     move a piece using move parameter. this will not work for pawn promotion, castling, en-passant
     '''
-
     def makeMove(self, move):
         self.board[move.startRow][move.startCol] = "--"  # make blank in source
         self.board[move.endRow][move.endCol] = move.pieceMoved  # put piece in destination
@@ -47,10 +46,10 @@ class GameState():
             self.whiteKingLocation = (move.endRow, move.endCol)
         elif move.pieceMoved == "bK":
             self.blackKingLocation = (move.endRow, move.endCol)
+
     '''
       undo the last move
     '''
-
     def undoMove(self):
         if len(self.moveLog) > 0:  # make sure there is a move to undo
             move = self.moveLog.pop()
